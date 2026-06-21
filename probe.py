@@ -107,7 +107,7 @@ def main() -> None:
 
 
     if args.format == "json":
-        def serialize(v: tuple[bool, str]) -> dict:
+        def serialize(v: tuple[bool, str]) -> dict[str,bool | str]:
             return {"open": v[0], "banner": v[1]}
         print(json.dumps({str(p): 
             serialize(results[p]) 
