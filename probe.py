@@ -1,3 +1,4 @@
+import json
 import argparse
 import socket
 from concurrent.futures import ThreadPoolExecutor
@@ -104,15 +105,31 @@ def main() -> None:
             port, is_open, banner = future.result()
             results[port] = (is_open, banner)
 
-    for port in sorted(results):
-        is_open, banner = results[port]
-        if is_open:
-            banner_str = f"{banner}" if banner else ""
-            print(f"{port:5d} OPEN{banner_str}")
 
-    open_count = sum(1 for v in results.values() if v[0])
-    print(f"\n{open_count}/{len(ports)} ports open")
+    if args.format == "json":
+        def serialize(v: tuple[bool, str]) -> dict:
+            return {"open": v[0], "banner": v[1]}
+        print(json.dumps({str(p): 
+            serialize(results[p]) 
+            for p in sorted(results)}, indent=2
+        ))
+    
+    elif args.format == "csv":
+        print("port,state,banner")
+        for port in sorted(results):
+            is_open, banner = results[port]
+            state = "open" if is_open else "closed"
+            print(f"{port},{state},{banner}")
+    
+    elif args.format == "table":
+        for port in sorted(results):
+            is_open, banner = results[port]
+            if is_open:
+                banner_str = f" {banner}" if banner else ""
+                print(f"{port:5d} OPEN{banner_str}")
 
+        open_count = sum(1 for v in results.values() if v[0])
+        print(f"\n{open_count}/{len(ports)} ports open")
 
 if __name__ == "__main__":
     main()
