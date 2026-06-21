@@ -99,6 +99,8 @@ The security argument: if you audit a target using a tool whose inner workings a
 
 **That's the wedge.** probe is not a replacement for nmap. It's a learning tool that turns into a debugging tool once you outgrow it. After you study the nmap source and understand what `-sS` and `-O` actually do at the packet level, you'll appreciate both tools more. But you start with the one you can hold in your head.
 
+Read the full story on dev.to: [I Wrote a Port Scanner in 136 Lines of Python — Here's What nmap Hides](https://dev.to/keirsalterego/i-wrote-a-port-scanner-in-136-lines-of-python-heres-what-nmap-hides-2kg6)
+
 ## Edge cases handled
 
 | Case | Behavior |
